@@ -1,8 +1,8 @@
 package user
 
 type UserReq struct {
-	Name *string `json:"name"`
-	Age  *int32  `json:"age"`
+	Name string `json:"name" binding:"required"`
+	Age  int32  `json:"age" binding:"required"`
 }
 
 type UserRes struct {

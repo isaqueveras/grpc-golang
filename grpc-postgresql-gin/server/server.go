@@ -77,10 +77,9 @@ func (s *Server) GetUsers(ctx context.Context, in *pb.GetUsersParams) (*pb.UserL
 		rows     pgx.Rows
 	)
 
-	if rows, err = s.conn.Query(ctx, "SELECT id, name, age FROM users_test"); err != nil {
+	if rows, err = s.conn.Query(ctx, "SELECT id, name, age FROM users_test ORDER BY id DESC"); err != nil {
 		panic(err)
 	}
-
 	defer rows.Close()
 
 	for rows.Next() {

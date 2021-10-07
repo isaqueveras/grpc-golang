@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	router := gin.Default()
+	router := gin.New()
 
 	v1 := router.Group("v1")
 	user.Router(v1.Group("users"))
