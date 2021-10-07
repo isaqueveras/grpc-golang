@@ -12,6 +12,7 @@ func main() {
 
 	v1 := router.Group("v1")
 	user.Router(v1.Group("users"))
+	user.RouterWithID(v1.Group("user"))
 
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)

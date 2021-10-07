@@ -2,11 +2,12 @@ syntax = "proto3";
 
 package proto;
 
-option go_package = "github.com/isaqueveras/grpc-golang/go-grpc-postgresql/proto-user";
+option go_package = "github.com/isaqueveras/grpc-golang/go-grpc-postgresql/proto";
 
 service UserManagenent {
  rpc CreateNewUser (NewUser) returns (User) {} 
  rpc GetUsers (GetUsersParams) returns (UserList) {}
+ rpc DeleteUser (DeleteUserReq) returns (DeleteUserRes) {}
 }
 
 message NewUser {
@@ -24,4 +25,12 @@ message GetUsersParams {}
 
 message UserList {
   repeated User users = 1;
+}
+
+message DeleteUserReq {
+  int32 id = 1;
+}
+
+message DeleteUserRes {
+  string message = 1;
 }

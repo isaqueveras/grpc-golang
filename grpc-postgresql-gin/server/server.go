@@ -33,7 +33,7 @@ func (s *Server) Run() error {
 	}
 
 	server := grpc.NewServer()
-	pb.RegisterUserManagenentServer(server, s)
+	pb.RegisterUserManagenentServer(server, s.UnimplementedUserManagenentServer)
 	log.Printf("Server listening at %v", lis.Addr())
 
 	return server.Serve(lis)
@@ -91,6 +91,25 @@ func (s *Server) GetUsers(ctx context.Context, in *pb.GetUsersParams) (*pb.UserL
 	}
 
 	return userList, nil
+}
+
+func (s *Server) DeleteUser(ctx context.Context, in *pb.DeleteUserReq) (*pb.DeleteUserRes, error) {
+	var user *pb.DeleteUserRes = &pb.DeleteUserRes{}
+
+	log.Print("id of user: ", in.GetId())
+
+	tx, _ := s.conn.Begin(ctx)
+	res, err := tx.Exec(ctx, "DELETE FROM users_test WHERE id = $1", in.GetId())
+	if err != nil {
+		log.Fatalf("Could not delete user with id: %v", in.GetId())
+	}
+
+	if res.RowsAffected() != 1 {
+		return &pb.DeleteUserRes{Message: "User not found to delete"}, nil
+	}
+
+	user.Message = "User delete with success!"
+	return user, nil
 }
 
 func main() {
